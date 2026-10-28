@@ -1,34 +1,23 @@
- IOC yang Ditemukan
+# Evidence dan Temuan
 
- 1. Network Indicators
-   45.131.214.85
-   45.131.214.85:443
-   http://45.131.214.85/fakeurl.htm
+## Evidence 1 — Komunikasi ke IP Eksternal
 
- 2. Internal Asset Indicators
-   10.2.28.88
-   00:05:00:41:ae:25
-   DESKTOP-TEYQ2NR**
+Hasil analisis menunjukkan komunikasi TCP dari host internal `10.2.28.88` menuju IP eksternal `45.131.214.85` pada port 443.
 
- 3. Application Indicators
-   User-Agent: NetSupport Manager/1.3
-   Server: NetSupport Gateway/1.92 (Windows NT)
-   CMD=POLL
-   CMD=ENCD
-   ES=1
+Komunikasi ini menjadi indikator awal aktivitas mencurigakan yang perlu diinvestigasi.
 
- 4. Potential DNS Indicator
- Sebelum koneksi ke IP tersebut, host melakukan resolusi terhadap:
-    vadusa.xyz
-   
- DNS response pada pcap mengembalikan:
-    45.131.214.85
+**Bukti:** Screenshot koneksi TCP pada Wireshark.
 
- Domain ini patut dimasukkan sebagai IOC dan diperiksa pada DNS logs, proxy logs,
- endpoint telemetry, dan histori browser.
+## Evidence 2 — URI `/fakeurl.htm`
 
- 5. Domain Environment
-   easyas123.tech
-   EASYAS123
-   EASYAS123-DC.easyas123.tech
- 
+Setelah dilakukan filtering pada paket HTTP, ditemukan permintaan menuju URI `/fakeurl.htm`. Paket tersebut juga menunjukkan User-Agent `NetSupport Manager/1.3`.
+
+Kombinasi indikator tersebut memperkuat dugaan bahwa komunikasi berkaitan dengan NetSupport RAT.
+
+**Bukti:** Screenshot hasil filter HTTP pada Wireshark.
+
+## Kesimpulan
+
+Berdasarkan kedua evidence, `10.2.28.88` merupakan host yang paling kuat terindikasi menjalankan NetSupport RAT dalam PCAP yang dianalisis.
+
+Temuan ini terbatas pada bukti jaringan yang tersedia dan belum membuktikan tindakan lanjutan seperti pencurian kredensial atau kompromi Domain Controller.

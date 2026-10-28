@@ -1,25 +1,23 @@
-# lalu-lintas-jaringan
+Analisis Network Traffic — NetSupport RAT
 
- Berdasarkan bukti jaringan, host kemungkinan memiliki akses RAT aktif dengan kemampuan
- umum NetSupport Manager, seperti:
+Analisis dilakukan terhadap file PCAP menggunakan TShark dan Wireshark untuk mengidentifikasi komunikasi jaringan yang mencurigakan.
 
- - Remote command execution
- - Pengambilan informasi host
- - File transfer
- - Remote desktop/control
- - Persistence
- - Credential theft atau abuse terhadap kredensial yang tersedia
- - Penggunaan host untuk aktivitas lanjutan dalam jaringan
+Dari hasil analisis, ditemukan bahwa host internal `10.2.28.88` berkomunikasi dengan IP eksternal `45.131.214.85` melalui TCP port 443. Komunikasi tersebut menggunakan URI `/fakeurl.htm` dan User-Agent `NetSupport Manager/1.3`, yang mengindikasikan aktivitas terkait NetSupport RAT.
 
- Karena host memiliki koneksi ke Domain Controller menggunakan SMB, LDAP, Kerberos, dan
- RPC, kemungkinan risiko meliputi:
+HASIL IDENTIFIKASI
 
- - Penyalahgunaan kredensial domain
- - Pengumpulan informasi AD
- - Akses ke shared folder
- - Lateral movement
- - Penyebaran malware
- - Akses terhadap resource domain
+- **IP internal:** `10.2.28.88`
+- **Hostname:** `DESKTOP-TEYQ2NR`
+- **IP eksternal:** `45.131.214.85`
+- **Port tujuan:** TCP 443
+- **URI mencurigakan:** `/fakeurl.htm`
+- **User-Agent:** `NetSupport Manager/1.3`
 
- Pcap tidak memberikan bukti yang cukup untuk memastikan apakah data berhasil
- dieksfiltrasi atau apakah command tertentu telah dijalankan.
+EVIDENCE
+
+1. Komunikasi TCP antara `10.2.28.88` dan `45.131.214.85` pada port 443.
+2. Permintaan HTTP yang menunjukkan URI `/fakeurl.htm`.
+
+## Kesimpulan
+
+Berdasarkan bukti komunikasi jaringan dan indikator NetSupport Manager yang ditemukan, host `10.2.28.88` diduga terinfeksi atau menjalankan NetSupport RAT. Pemeriksaan lebih lanjut diperlukan untuk memastikan dampak infeksi.
